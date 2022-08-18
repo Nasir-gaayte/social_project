@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'accounts/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'accounts/css/style.css' %}">
+    <title>Social</title>
+</head>
+<body class="back1">
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Social The World</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Dark offcanvas</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Groups</a>
+                </li>
+                <li>
+
+                  
+                  <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    {% if user.is_authenticated %}
+                    <li><a class="nav-link active" href="#">Post</a></li>
+                    <li><a class="nav-link active" href="#">Create Groups</a></li>
+                    <li>
+                      <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                    <li><a class="nav-link" href="{% url 'login' %}">Log In</a></li>
+                    <li><a class="nav-link" href="{% url 'accounts:singup' %}">Sing Up</a></li>
+                    {% endif %}  
+                  </ul>
+                  
+                </li>
+              </ul>
+             
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {% block content %}
+      
+      {% endblock content %}
+      <script src="{% static 'accounts/js/bootstrap.js' %}"></script>
+</body>
+</html>
