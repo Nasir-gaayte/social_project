@@ -1,12 +1,11 @@
-from socket import fromshare
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.http import Http404
 from django.views import generic
-from braces.views import SelecteRelatedMixin
+from braces.views import SelectRelatedMixin
 from . import models
-from . import froms
+
 from django.contrib import messages
 
 
@@ -14,8 +13,8 @@ from django.contrib.auth import get_user_model
 User = get_user_model
 # Create your views here.
 
-class PostList(SelecteRelatedMixin,generic.ListView):
-    model= models.post
+class PostList(SelectRelatedMixin,generic.ListView):
+    model= models.Post
     select_related = ('user','group')
     
 class UserPosts(generic.ListView):
@@ -24,7 +23,7 @@ class UserPosts(generic.ListView):
     
     def get_queryset(self):
         try:
-            self.post.user = User.objects.prefetch_related('posts').get(username__iexact=self.kwargs.get('username'))
+            self.post_user = User.objects.prefetch_related('posts').get(username__iexact=self.kwargs.get('username'))
         except User.DoesNotExist:
             raise Http404
         else:
@@ -36,7 +35,7 @@ class UserPosts(generic.ListView):
         return context
     
     
-class PostDetail(SelecteRelatedMixin,generic.DetailView):
+class PostDetail(SelectRelatedMixin,generic.DetailView):
     model = models.Post
     select_related = ('user','group')
     
@@ -47,17 +46,17 @@ class PostDetail(SelecteRelatedMixin,generic.DetailView):
        
 
 
-class CreatePost(LoginRequiredMixin,SelecteRelatedMixin,generic.CreateView):
+class CreatePost(LoginRequiredMixin,SelectRelatedMixin,generic.CreateView):
     fields = ('message','group')
     model = models.Post
     
-    def form_valid(self,form):
+    def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
-        self.object.save()  
-        return super().form_valid(form)     
+        self.object.save()
+        return super().form_valid(form)   
     
-class DeletePost(LoginRequiredMixin,SelecteRelatedMixin,generic.DeleteView):
+class DeletePost(LoginRequiredMixin,SelectRelatedMixin,generic.DeleteView):
     model = models.Post
     select_related = ('user', 'group')
     success_url = reverse_lazy('posts:all')  

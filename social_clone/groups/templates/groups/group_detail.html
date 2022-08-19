@@ -5,7 +5,7 @@
 <h2>Member Count: {{group.members.conut}}</h2>
 
 <div class="content">
-    {% if user im group.members.all %}
+    {% if user in group.members.all %}
         <a href="{% url 'groups:leave' slug=group.slug %}" 
         class="btn btn-lg btn-fill btn-warning">
             <span class="glyphicon glyphicon-remove-circle">Leave </span></a>
@@ -20,7 +20,7 @@
 
 {% block group_content %}
 <div class="group_content">
-    {% if group.posts.count ==0 %}
+    {% if group.posts.count  %}
     <h2>No posts in this group yet?</h2>
     {% else %}
         {% for post in group.posts.all %}
